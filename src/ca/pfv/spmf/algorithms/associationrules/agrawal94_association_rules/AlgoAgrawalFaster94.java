@@ -218,7 +218,9 @@ public class AlgoAgrawalFaster94 {
 					
 					// If we are here, it means that the rule respect the minconf and minlift parameters.
 					// Therefore, we output the rule.
-					saveRule(itemset_Lk_minus_hm_P_1, support, itemsetHm_P_1, supportHm_P_1, lk.getAbsoluteSupport(), conf, lift);
+				
+						saveRule(itemset_Lk_minus_hm_P_1, support, itemsetHm_P_1, supportHm_P_1, lk.getAbsoluteSupport(), conf, lift);
+					
 					
 					// Then we keep the itemset  hm_P_1 to find more rules using this itemset and lk.
 					H1_for_recursion.add(itemsetHm_P_1);
@@ -229,7 +231,6 @@ public class AlgoAgrawalFaster94 {
 			}
 			
 		}
-
 		// close the file if we saved the result to a file
 		if(writer != null){
 			writer.close();
@@ -439,6 +440,19 @@ public class AlgoAgrawalFaster94 {
 	}
 	
 	/**
+	 
+	 * justify if rule should be filtered
+	 * 
+	 */
+	
+	private boolean IsFiltered(int[] supportItemset2)
+	{
+		if(supportItemset2.length != 1 || supportItemset2[0] != 1)
+			return true;
+		return false;
+	}
+ 	
+	/**
 	 * Save a rule to the output file or in memory depending
 	 * if the user has provided an output file path or not
 	 * @param itemset1  left itemset of the rule
@@ -452,8 +466,14 @@ public class AlgoAgrawalFaster94 {
 	 */
 	protected void saveRule(int[] itemset1, int supportItemset1, int[] itemset2, int supportItemset2,
 			int absoluteSupport, double conf, double lift) throws IOException {
-		ruleCount++;
 		
+		if(IsFiltered(itemset2))
+		{
+			return;
+		}
+		
+		ruleCount++;
+	
 		// if the result should be saved to a file
 		if(writer != null){
 			StringBuilder buffer = new StringBuilder();
