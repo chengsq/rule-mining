@@ -3,11 +3,12 @@ import numpy as np
 import logging
 import pprint as pp
 import pandas as pd
+import sys
 
 
 def  load_csv_file(file_name):
 
-    df = pd.read_csv('./dx_train.csv', header = 0)
+    df = pd.read_csv(file_name, header = 0)
     #print df
     # for tab delimited use:
     # df = pd.read_csv(input_file, header = 0, delimiter = "\t")
@@ -27,8 +28,8 @@ def  load_csv_file(file_name):
 
     return  numpy_array
 
-def get_transection_from_data(origin_data):
-    fo = open("foo.txt", "w")
+def get_transection_from_data(origin_data,format_file_name):
+    fo = open(format_file_name, "w")
     for row in origin_data:
         # last is label ,0 is black
         if(row[-1] == 0):
@@ -40,9 +41,14 @@ def get_transection_from_data(origin_data):
             fo.writelines(VIstring + '\n')
     return
 
+if len(sys.argv) < 3:
+    print "error: need 2 arguments"
+else:
+    csv_file_name = sys.argv[1]
+    format_file_name = sys.argv[2]
 
-data = load_csv_file("")
-get_transection_from_data(data)
+data = load_csv_file(csv_file_name)
+get_transection_from_data(data,format_file_name)
 
 
 #if __name__ == "__main__":
